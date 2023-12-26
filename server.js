@@ -7,7 +7,7 @@ let server = net.createServer(onClientConnected);
 
 server.listen(PORT);
 
-console.log('listening');
+console.log('listening to connections ');
 
 function onClientConnected(socket){
     console.log(`New client: ${socket.remoteAddress}  `);
