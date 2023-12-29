@@ -6,11 +6,7 @@ if(threads.isMainThread) {
 module.exports = function onClientConnected(socket){
     console.log(`New client: ${socket.remoteAddress}  `);   
    return    new Promise( (resolve, reject)=>{
-                let socketData = {
-                    remoteAddress: socket.remoteAddress,
-                    remotePort: socket.remotePort,
-                
-                };
+              
             const worker = new threads.Worker(__filename, {socket});
             worker.on('message', (message) => {
               console.log('ThreadInfo: \n', message);
