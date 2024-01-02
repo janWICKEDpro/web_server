@@ -5,7 +5,7 @@ const { dir, log } = require('console');
 const PORT = 5000;
 // const onClientConnected = require('./client_connections');
 const ADDRESS = '127.0.0.1';
-
+let fileNames = [];
 function main(){
     let server = net.createServer((socket)=>{
         socket.on('data',  async (data) =>{
@@ -16,7 +16,7 @@ function main(){
 
         let isFileInDir = await  isInServerDirectory(requestData, requestDataPath);
        
-     if(isFileInDir == true){
+     if(fileNames.includes(requestData.split('/').slice(-1)[0])){
         fileAccess.readFile(requestData == '/'? './www/index.html': `./www${requestData}`, 'utf-8', (err, result)=>{
             if(err){
              message = `HTTP/1.1 404 Not Found \r\n`; 
@@ -66,7 +66,7 @@ function main(){
 }
 
 main();
-
+ 
  function isInServerDirectory(fileName,dir){
    return  new Promise((resolve, reject)=> {
     fileAccess.readdir(dir, {withFileTypes: true}, (err,files)=>{
@@ -79,17 +79,12 @@ main();
         if(file.isFile()){
             console.log(file.name);
             console.log(fileName.split('/').slice(-1)[0]);
-           if(file.name == fileName.split('/').slice(-1)[0]){
-            console.log('I was here');
-             resolve(true);
-            return; 
-           } 
+            fileNames.push(file.name);
         }else{
-    
-        //   resolve(isInServerDirectory(fileName,path.join(dir, file.name)));
+        isInServerDirectory(fileName,path.join(dir, file.name))
         }
     });
-   resolve(false);
+   resolve();
 });
    });
    
