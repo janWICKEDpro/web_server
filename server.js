@@ -16,7 +16,8 @@ function main(){
 
         let isFileInDir = await  isInServerDirectory(requestData, requestDataPath);
        
-     if(fileNames.includes(requestData.split('/').slice(-1)[0])){
+        
+     if(fileNames.includes(requestData.split('/').slice(-1)[0]) || requestData === '/'){
         fileAccess.readFile(requestData == '/'? './www/index.html': `./www${requestData}`, 'utf-8', (err, result)=>{
             if(err){
              message = `HTTP/1.1 404 Not Found \r\n`; 
