@@ -15,7 +15,7 @@ function main(){
         const requestDataPath = path.join(__dirname, '/www');
 
         let isFileInDir = await  isInServerDirectory(requestData, requestDataPath);
-       
+    
         
      if(fileNames.includes(requestData.split('/').slice(-1)[0]) || requestData === '/'){
         fileAccess.readFile(requestData == '/'? './www/index.html': `./www${requestData}`, 'utf-8', (err, result)=>{
@@ -32,7 +32,7 @@ function main(){
                         return;
                     }
                     message =  `HTTP/1.1 200 OK\r\n\r\n ${result}\r\n`;
-                      
+      
                 var response = [
                     'HTTP/1.1 200 OK',
                     'Content-Type: text/plain',
@@ -60,6 +60,9 @@ function main(){
         socket.on('end', () => {
             console.log(`client disconnected`);
             });
+            socket.on('error', (err) => {
+                console.log(`error: ${err}`);
+                });
     });
     server.listen(PORT);
     
